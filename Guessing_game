@@ -1,0 +1,39 @@
+###Based on Udemy Complete-Python-3-Bootcamp course - challenge "guessing game"
+###
+
+## Import random generator and generate random number between 1 and 100
+import random
+goal = random.randint(1,100)
+
+## Initialize counter and empty list
+i = 0
+guess = []
+
+## Game structure
+while True:
+    x = int(input('Enter a number btw 0 and 100'))
+    print(' your guess is ', x )
+    if x<0 or x>100:
+        print('invalid guess - btw 0 and 100 please')
+        continue
+    else:
+        print('valid guess, testing...')
+        guess.append(x)
+        if len(guess) == 1:    
+            if guess[i] == goal:
+                print('goal reached!!! You took ', len(guess), 'guesses to get here')
+                break
+            elif abs(goal - guess[i]) <= 10:
+                print("Warm")
+            elif abs(goal - guess[i]) > 10:
+                print("Cold")
+        else:
+            if guess[i] == goal:               
+                print('goal reached!!! You took ', len(guess), 'guesses to get here')
+                break
+            elif abs(goal - guess[i-1]) >= abs(goal - guess[i]):
+                print("Warmer")
+            else:
+                print("Colder")
+    i +=1
+    pass
