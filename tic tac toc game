@@ -1,0 +1,288 @@
+###Based on Udemy Complete-Python-3-Bootcamp course - milestone 1
+from IPython.display import clear_output
+
+
+#Define board and board mapping
+board = ['#',' ',' ',' ',' ',' ',' ',' ',' ',' ',]
+board_map = {'A1':1, 'A2':2, 'A3':3, 
+            'B1':4, 'B2':5, 'B3':6,
+            'C1':7, 'C2':8, 'C3':9}
+
+#Function to print board
+def print_board():
+    # clears console
+    clear_output()
+    # print board
+    print("  " + " | " + "1" + " | " + "2" + " | " + "3" + "\n" + 
+          " A" + " | " + board[1] + " | " + board[2] + " | " + board[3] + "\n" +
+          "  " + "-" + "| " + "-" + " | " + "-" + " | " + "-"  + "\n" +
+          " B" + " | " + board[4] + " | " + board[5] + " | " + board[6] + "\n" +
+          "  " + "-" + "| " + "-" + " | " + "-" + " | "+ "-"  + "\n" +
+          " C" + " | " + board[7] + " | " + board[8] + " | " + board[9] + "\n")
+
+
+#Function to validate winning scenario    
+def win_validation():
+        #Check horizontal patterns
+        h1 = (board[1] == board[2] == board[3] == "X") or (board[1] == board[2] == board[3] == "O")
+        h2 = (board[4] == board[5] == board[6] == "X") or (board[4] == board[5] == board[6] == "O")
+        h3 = (board[7] == board[8] == board[9] == "X") or (board[7] == board[8] == board[9] == "O")
+        #Check vertical patterns
+        v1 = (board[1] == board[4] == board[7] == "X") or (board[1] == board[4] == board[7] == "O")
+        v2 = (board[2] == board[5] == board[8] == "X") or (board[2] == board[5] == board[8] == "O")
+        v3 = (board[3] == board[6] == board[9] == "X") or (board[3] == board[6] == board[9] == "O")        
+        #Check oblique/cross patterns
+        c1 = (board[1] == board[5] == board[9] == "X") or (board[1] == board[5] == board[9] == "O")
+        c2 = (board[3] == board[5] == board[7] == "X") or (board[3] == board[5] == board[7] == "O")
+        
+        game_result = h1 + h2 + h3 + v1 + v2 + v3 + c1 + c2
+        
+        if game_result:
+            print('WE HAVE A WINNER')
+        return game_result
+
+    
+#### Starting game    
+start = input('Want no play? (Y/N)')
+
+#Start game
+if start == 'N':
+    #Shuts down program
+    print('Ok, fine, goodbye')
+else:
+    while True:
+        if start.upper() not in ['Y','N']:
+            #To start over
+            print('Invalid input, restart program')
+            start = input('Want no play? (Y/N)')
+            continue
+        else:
+            print_board()
+            game_result = False
+            #While loop validation for P1 tick selection
+            while game_result != True:
+
+                #User input to define if Player one plays X or O
+                P1_mark = input('What tick do you want to play with? (X/O)')
+                
+                #If invalid input, retries input
+                while P1_mark.upper() not in ["X","O"]:
+                    print('Invalid input, select "X" or "O"')
+                    P1_mark = input('What tick do you want to play with? (X/O)')
+                
+                #Following if and else define player turns given P1 choice
+                if P1_mark.upper() == "X":
+                    P1_mark = P1_mark.upper()
+                    first_player = "Player 1"
+                    second_player = "Player 2"
+                    P2_mark = "O"
+                    print("{} plays with {} and {} plays with {}". format(first_player,P1_mark,second_player,P2_mark))
+                else:
+                    first_player = "Player 2"
+                    second_player = "Player 1"
+                    P2_mark = "X"
+                    print("{} plays with {} and {} plays with {}". format(first_player,P1_mark,second_player,P2_mark))
+                    
+                    
+
+                ##Start game with users input from here one
+                ##Turns are designated "PlayXY", where X is the round name and Y is the player's turn - First or second.
+
+                ######
+                #First round - First player
+                ######
+                while True:
+                    play11 = input('{} please select the cell you want to play (Letter/Number)'.format(first_player))
+                    play11 = play11.upper()
+                    #Check if input of play is valid
+                    if (len(play11) != 2) or (play11[0] not in ["A","B","C"]) or (play11[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play11 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play11]] != " ":
+                        print("Invalid input, cell "+ play11 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play11]] = P1_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                
+                print("checkpoint - going to 1st round p2")
+                #First round - Second player
+                while True:
+                    play12 = input('{} please select the cell you want to play (Letter/Number)'.format(second_player))
+                    play12 = play12.upper()
+                    #Check if input of play is valid
+                    if (len(play12) != 2) or (play12[0] not in ["A","B","C"]) or (play12[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play12 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play12]] != " ":
+                        print("Invalid input, cell "+ play12 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play12]] = P2_mark
+                        #Prints updated board
+                        print_board()
+                        break
+
+                ######
+                #Second round - First player
+                ######
+                while True:
+                    play21 = input('{} please select the cell you want to play (Letter/Number)'.format(first_player))
+                    play21 = play21.upper()
+                    #Check if input of play is valid
+                    if (len(play21) != 2) or (play21[0] not in ["A","B","C"]) or (play21[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play21 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play21]] != " ":
+                        print("Invalid input, cell "+ play21 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play21]] = P1_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Second round - Second player
+                while True:
+                    play22 = input('{} please select the cell you want to play (Letter/Number)'.format(second_player))
+                    play22 = play22.upper()
+                    #Check if input of play is valid
+                    if (len(play22) != 2) or (play22[0] not in ["A","B","C"]) or (play22[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play22 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play22]] != " ":
+                        print("Invalid input, cell "+ play22 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play22]] = P2_mark
+                        #Prints updated board
+                        print_board()
+                        break
+
+                ######
+                #Third round - First player
+                ######
+                while True:
+                    play31 = input('{} please select the cell you want to play (Letter/Number)'.format(first_player))
+                    play31 = play31.upper()
+                    #Check if input of play is valid
+                    if (len(play31) != 2) or (play31[0] not in ["A","B","C"]) or (play31[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play31 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play31]] != " ":
+                        print("Invalid input, cell "+ play31 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play31]] = P1_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Test if there is a winning pattern, if yes, breaks while break
+                if win_validation() == True:
+                    print("GAME FINISHED")
+                    break
+
+                #Second round - Second player
+                while True:
+                    play32 = input('{} please select the cell you want to play (Letter/Number)'.format(second_player))
+                    play32 = play32.upper()
+                    #Check if input of play is valid
+                    if (len(play32) != 2) or (play32[0] not in ["A","B","C"]) or (play32[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play32 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play32]] != " ":
+                        print("Invalid input, cell "+ play32 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play32]] = P2_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Test if there is a winning pattern, if yes, breaks while break
+                if win_validation() == True:
+                    print("GAME FINISHED")
+                    break
+
+                ######
+                #Fourth round - First player
+                ######
+                while True:
+                    play41 = input('{} please select the cell you want to play (Letter/Number)'.format(first_player))
+                    play41 = play41.upper()
+                    #Check if input of play is valid
+                    if (len(play41) != 2) or (play41[0] not in ["A","B","C"]) or (play41[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play41 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play41]] != " ":
+                        print("Invalid input, cell "+ play41 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play41]] = P1_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Test if there is a winning pattern, if yes, breaks while break
+                if win_validation() == True:
+                    print("GAME FINISHED")
+                    break
+                
+                #Second round - Second player
+                while True:
+                    play42 = input('{} please select the cell you want to play (Letter/Number)'.format(second_player))
+                    play42 = play42.upper()
+                    #Check if input of play is valid
+                    if (len(play42) != 2) or (play42[0] not in ["A","B","C"]) or (play42[1] not in ["1","2","3"]):
+                        print("Invalid input: "+ play42 +"\n Please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play42]] != " ":
+                        print("Invalid input, cell "+ play42 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play42]] = P2_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Test if there is a winning pattern, if yes, breaks while break
+                if win_validation() == True:
+                    print("GAME FINISHED")
+                    break
+
+
+                ######
+                #ifth round - First player - only this player plays as there is only one tile left
+                ######
+                while True:
+                    play51 = input('{} please select the cell you want to play (Letter/Number)'.format(first_player))
+                    play51 = play51.upper()
+                    #Check if input of play is valid
+                    if (len(play51) != 2) or (play51[0] not in ["A","B","C"]) or (play51[1] not in ["1","2","3"]):
+                        print("Invalid input, please introduce cell as Letter/Number, e.g., A1")
+                        continue
+                    #Check if input is in an empty square    
+                    elif board[board_map[play51]] != " ":
+                        print("Invalid input, cell "+ play51 + " already selected, please play in an empty cell")
+                        continue
+                    else:
+                        board[board_map[play51]] = P1_mark
+                        #Prints updated board
+                        print_board()
+                        break
+                #Test if there is a winning pattern, if yes, breaks while break
+                if win_validation() == True:
+                    print("GAME FINISHED")
+                    break
+
+                ### Game ended in a tie, break to escape while loop
+                print('No winner this time!')
+                break
+
+
